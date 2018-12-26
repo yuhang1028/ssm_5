@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.ProductMapper">
+    <!--查询所有-->
+<select id="findAll" resultType="product" parameterType="String">
+    select * from product
+    <where>
+    <if test=" productName !=null">
+        productName like concat(concat('%',#{productName}),'%')
+    </if>
+    </where>
+    ORDER BY productNum DESC
+</select>
+    <!--修改状态-->
+    <update id="updateStatus" parameterType="product">
+
+        update product set productStatus = #{productStatus} where productNum IN
+         <if test="productStr!=null and productStr.length>0">
+             <foreach collection="productStr" open="(" close=")" item="id" separator=",">
+                 #{id}
+             </foreach>
+         </if>
+
+    </update>
+    <!--查询当前编号的最大值-->
+    <select id="check" resultType="String">
+        select max(PRODUCTNUM) from PRODUCT
+    </select>
+    <!--添加产品信息-->
+    <insert id="save" parameterType="product">
+        insert into PRODUCT(PRODUCTNUM, PRODUCTNAME, CITYNAME, DEPARTURETIME, PRODUCTPRICE, PRODUCTDESC, PRODUCTSTATUS) VALUES (
+        #{productNum},#{productName},#{cityName},#{departureTime},#{productPrice},#{productDesc},#{productStatus}
+        )
+    </insert>
+
+    <!--删除产品信息-->
+    <update id="delete" parameterType="String" >
+      delete from PRODUCT where PRODUCTNUM = #{productNum}
+    </update>
+</mapper>
