@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" isELIgnored="false" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script src="${pageContext.request.contextPath}/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!DOCTYPE html>
 <html>
 
@@ -146,6 +147,7 @@
 	href="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.css">
 </head>
 
+
 <body class="hold-transition skin-purple sidebar-mini">
 
 	<div class="wrapper">
@@ -175,7 +177,61 @@
 				</ol>
 			</section>
 			<!-- 内容头部 /-->
+		<script>
 
+            //	删除
+            $(function () {
+                $("button[title='删除']").click(function () {
+				var ids = getAllId();
+				if(ids){
+                    location.href="${pageContext.request.contextPath}/orders/delete?idStr="+ids;
+                }
+                });
+                // 修改支付状态为已支付
+				$("#open").click(function () {
+					var ids =getAllId();
+					if(ids){
+                        location.href="${pageContext.request.contextPath}/orders/updateStatus?orderStatus=1&idStr="+ids;
+                    }
+                });
+
+                $("#close").click(function () {
+                    var ids =getAllId();
+                    if(ids){
+                        location.href="${pageContext.request.contextPath}/orders/updateStatus?orderStatus=0&idStr="+ids;
+                    }
+                });
+
+
+
+            });
+
+
+			//获取id
+            function getAllId() {
+            var arr = $("input[name='ids']:checked");
+            var ids = [];
+           if(arr){
+               for(var i =0; i <arr.length ;i++){
+                   var id = arr[i].value;
+                   ids.push(id);
+               }
+		   }
+		   return ids;
+            }
+         //    模糊查询
+			$(function () {
+			    $("#clc").click(function () {
+			        alert(1);
+                    var productName = $("input[placeholder='搜索']").val();
+                    if(productName){
+                       location.href="${pageContext.request.contextPath}/orders/findAll?ordersName="+productName;
+                    }
+                });
+            });
+
+
+		</script>
 			<!-- 正文区域 -->
 			<section class="content">
 
@@ -195,16 +251,16 @@
 								<div class="form-group form-inline">
 									<div class="btn-group">
 										<button type="button" class="btn btn-default" title="新建"
-											onclick="location.href='${pageContext.request.contextPath}/pages/product-add.jsp'">
+											onclick="location.href='${pageContext.request.contextPath}/pages/orders-add.jsp'">
 											<i class="fa fa-file-o"></i> 新建
 										</button>
 										<button type="button" class="btn btn-default" title="删除">
 											<i class="fa fa-trash-o"></i> 删除
 										</button>
-										<button type="button" class="btn btn-default" title="开启">
+										<button type="button" class="btn btn-default" title="开启" id="open">
 											<i class="fa fa-check"></i> 开启
 										</button>
-										<button type="button" class="btn btn-default" title="屏蔽">
+										<button type="button" class="btn btn-default" title="屏蔽" id="close">
 											<i class="fa fa-ban"></i> 屏蔽
 										</button>
 										<button type="button" class="btn btn-default" title="刷新">
@@ -216,8 +272,8 @@
 							<div class="box-tools pull-right">
 								<div class="has-feedback">
 									<input type="text" class="form-control input-sm"
-										placeholder="搜索"> <span
-										class="glyphicon glyphicon-search form-control-feedback"></span>
+										placeholder="搜索" > <span
+										class="glyphicon glyphicon-search <%--form-control-feedback--%>" id="clc"></span>
 								</div>
 							</div>
 							<!--工具栏/-->
@@ -242,10 +298,9 @@
 								<tbody>
 
 
-									<c:forEach items="${ordersList}" var="orders">
-
+									<c:forEach items="${page.list}" var="orders">
 										<tr>
-											<td><input name="ids" type="checkbox"></td>
+											<td><input name="ids" type="checkbox" value="${orders.id}"></td>
 											<td>${orders.id }</td>
 											<td>${orders.orderNum }</td>
 											<td>${orders.product.productName }</td>
@@ -273,36 +328,6 @@
 							</table>
 							<!--数据列表/-->
 
-							<!--工具栏-->
-							<div class="pull-left">
-								<div class="form-group form-inline">
-									<div class="btn-group">
-										<button type="button" class="btn btn-default" title="新建">
-											<i class="fa fa-file-o"></i> 新建
-										</button>
-										<button type="button" class="btn btn-default" title="删除">
-											<i class="fa fa-trash-o"></i> 删除
-										</button>
-										<button type="button" class="btn btn-default" title="开启">
-											<i class="fa fa-check"></i> 开启
-										</button>
-										<button type="button" class="btn btn-default" title="屏蔽">
-											<i class="fa fa-ban"></i> 屏蔽
-										</button>
-										<button type="button" class="btn btn-default" title="刷新">
-											<i class="fa fa-refresh"></i> 刷新
-										</button>
-									</div>
-								</div>
-							</div>
-							<div class="box-tools pull-right">
-								<div class="has-feedback">
-									<input type="text" class="form-control input-sm"
-										placeholder="搜索"> <span
-										class="glyphicon glyphicon-search form-control-feedback"></span>
-								</div>
-							</div>
-							<!--工具栏/-->
 
 						</div>
 						<!-- 数据表格 /-->
@@ -315,13 +340,11 @@
                 <div class="box-footer">
                     <div class="pull-left">
                         <div class="form-group form-inline">
-                            总共2 页，共14 条数据。 每页
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            总共${page.pages} 页，共${page.total} 条数据。 每页
+                            <select class="form-control" id="changePageSize" onchange="changePageSize()">
+								<c:forEach begin="1" end="5" var="i">
+                                <option ${page.pageSize==i?"selected":""}>${i}</option>
+								</c:forEach>
                             </select> 条
                         </div>
                     </div>
@@ -329,17 +352,15 @@
                     <div class="box-tools pull-right">
                         <ul class="pagination">
                             <li>
-                                <a href="#" aria-label="Previous">首页</a>
+                                <a href="${pageContext.request.contextPath}/orders/findAll?pageNum=1&pageSize=${page.pageSize}" aria-label="Previous">首页</a>
                             </li>
-                            <li><a href="#">上一页</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">下一页</a></li>
+                            <li><a href="${pageContext.request.contextPath}/orders/findAll?pageNum=${page.pageNum-1}&pageSize=${page.pageSize}">上一页</a></li>
+							<c:forEach begin="1" end="${page.pages}" var="i">
+								<li ${page.pageNum == i ? "class='active'":""}><a href="${pageContext.request.contextPath}/orders/findAll?pageNum=${i}&pageSize=${page.pageSize}">${i}</a></li>
+							</c:forEach>
+                            <li><a href="${pageContext.request.contextPath}/orders/findAll?pageNum=${page.pageNum+1}&pageSize=${page.pageSize}">下一页</a></li>
                             <li>
-                                <a href="#" aria-label="Next">尾页</a>
+                                <a href="${pageContext.request.contextPath}/orders/findAll?pageNum=${page.pages}&pageSize=${page.pageSize}" aria-label="Next">尾页</a>
                             </li>
                         </ul>
                     </div>
@@ -465,7 +486,7 @@
 			var pageSize = $("#changePageSize").val();
 
 			//向服务器发送请求，改变没页显示条数
-			location.href = "${pageContext.request.contextPath}/orders/findAll.do?page=1&pageSize="
+			location.href = "${pageContext.request.contextPath}/orders/findAll?pageNum=${page.pageNum}&pageSize="
 					+ pageSize;
 		}
 		$(document).ready(function() {

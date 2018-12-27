@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itheima.mapper.ProductMapper">
     <!--查询所有-->
-<select id="findAll" resultType="product" parameterType="String">
+<select id="findAll" resultType="product" parameterType="product">
     select * from product
     <where>
     <if test=" productName !=null">
@@ -15,8 +15,7 @@
 </select>
     <!--修改状态-->
     <update id="updateStatus" parameterType="product">
-
-        update product set productStatus = #{productStatus} where productNum IN
+        update product set productStatus = #{productStatus} where id IN
          <if test="productStr!=null and productStr.length>0">
              <foreach collection="productStr" open="(" close=")" item="id" separator=",">
                  #{id}
@@ -28,6 +27,7 @@
     <select id="check" resultType="String">
         select max(PRODUCTNUM) from PRODUCT
     </select>
+
     <!--添加产品信息-->
     <insert id="save" parameterType="product">
         insert into PRODUCT(PRODUCTNUM, PRODUCTNAME, CITYNAME, DEPARTURETIME, PRODUCTPRICE, PRODUCTDESC, PRODUCTSTATUS) VALUES (
@@ -37,6 +37,12 @@
 
     <!--删除产品信息-->
     <update id="delete" parameterType="String" >
-      delete from PRODUCT where PRODUCTNUM = #{productNum}
+      delete from PRODUCT where id = #{id}
     </update>
+
+    <!--关联表查询-->
+<select id="findById" resultType="product" parameterType="String">
+    select * from PRODUCT where id = #{id}
+</select>
+
 </mapper>

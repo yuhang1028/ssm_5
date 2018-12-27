@@ -13,5 +13,5 @@ public interface ProductMapper {
 
     void save(Product p)throws Exception;
 
-    void delete(String productNum) throws Exception;
+    void delete(String id) throws Exception;
 }

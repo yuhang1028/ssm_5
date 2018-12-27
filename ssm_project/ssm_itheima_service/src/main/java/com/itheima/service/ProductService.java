@@ -10,8 +10,10 @@ public interface ProductService {
      * @return
      * @throws Exception
      * @param product
+     * @param pageNum
+     * @param pageSize
      */
-    List<Product> findAll(Product product) throws Exception;
+    List<Product> findAll(Product product, Integer pageNum, Integer pageSize) throws Exception;
 
     /**
      * 修改状态
@@ -34,7 +36,7 @@ public interface ProductService {
 
     /**
      * 删除产品信息
-     * @param productNum
+     * @param id
      */
-    void delete(String[] productNum) throws Exception;
+    void delete(String[] id) throws Exception;
 }

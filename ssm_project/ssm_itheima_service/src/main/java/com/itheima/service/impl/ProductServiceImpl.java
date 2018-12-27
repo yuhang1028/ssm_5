@@ -1,5 +1,6 @@
 package com.itheima.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.itheima.domain.Product;
 import com.itheima.mapper.ProductMapper;
 import com.itheima.service.ProductService;
@@ -14,9 +15,9 @@ public class ProductServiceImpl implements ProductService {
    @Autowired
     private ProductMapper mapper;
     @Override
-    public List<Product> findAll(Product product) throws Exception {
+    public List<Product> findAll(Product product, Integer pageNum, Integer pageSize) throws Exception {
+        PageHelper.startPage(pageNum,pageSize);
         List<Product> productList = mapper.findAll(product);
-        System.out.println(productList);
         return productList;
     }
 
@@ -37,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(String[] productNum) throws Exception {
-        for (String s : productNum) {
+    public void delete(String[] id) throws Exception {
+        for (String s : id) {
             mapper.delete(s);
         }
     }

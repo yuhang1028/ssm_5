@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.OrdersMapper">
+    <resultMap id="ordersMap" type="orders">
+        <id property="id" column="id"></id>
+        <!--关联表查询-->
+        <association property="product" javaType="product" column="productId" select="com.itheima.mapper.ProductMapper.findById"/>
+    </resultMap>
+    <!--分页模糊查询-->
+    <select id="findAll" resultMap="ordersMap">
+        select * from ORDERS
+    </select>
+
+    <!--删除选中-->
+    <delete id="delete" parameterType="orders">
+        delete from ORDERS where id in
+        <if test=" idStr != null and idStr.length>0 ">
+            <foreach collection="idStr" open="(" separator="," close=")" item="id">
+                 #{id}
+            </foreach>
+        </if>
+    </delete>
+
+    <!--改变状态-->
+    <update id="updateStatus" parameterType="orders">
+  update (select * from orders where orderstatus = 0) a set a.orderstatus = #{orderStatus}
+  where id IN
+ <if test="idStr!=null and idStr.length>0">
+     <foreach collection="idStr" open="(" close=")" separator="," item="id">
+         #{id}
+     </foreach>
+ </if>
+    </update>
+</mapper>

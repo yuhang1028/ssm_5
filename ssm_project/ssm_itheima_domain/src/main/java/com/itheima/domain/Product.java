@@ -102,11 +102,13 @@ public class Product implements Serializable {
     }
 
     public String getProductStatusStr() {
-        if (productStatus == 1){
-            productStatusStr ="开启";
-        }else if(productStatus == 0){
-            productStatusStr = "关闭";
-        }
+       if(productStatus != null){
+           if (productStatus == 1){
+               productStatusStr ="开启";
+           }else if(productStatus == 0){
+               productStatusStr = "关闭";
+           }
+       }
         return productStatusStr;
     }
 
