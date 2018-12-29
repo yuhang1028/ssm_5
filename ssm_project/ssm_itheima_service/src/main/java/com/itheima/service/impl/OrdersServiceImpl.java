@@ -15,9 +15,9 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
   private OrdersMapper ordersMapper ;
     @Override
-    public List<Orders> findAll(Integer pageNum,Integer pageSize) throws Exception {
+    public List<Orders> findAll(Integer pageNum,Integer pageSize,Orders order) throws Exception {
         PageHelper.startPage(pageNum,pageSize);
-        List<Orders> orders = ordersMapper.findAll();
+        List<Orders> orders = ordersMapper.findAll(order);
         return orders;
     }
 
@@ -29,5 +29,10 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public void updateStatus(Orders orders) throws Exception {
         ordersMapper.updateStatus(orders);
+    }
+
+    @Override
+    public Orders findById(String id) throws Exception {
+        return ordersMapper.findById(id);
     }
 }

@@ -491,7 +491,7 @@
 
             //向服务器发送请求，改变没页显示条数
             location.href = "${pageContext.request.contextPath}/product/findAll?page=1&pageSize="
-                + pageSize;
+                + pageSize+"&productName=${product.productName}";
         }
 
 

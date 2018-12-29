@@ -223,9 +223,9 @@
 			$(function () {
 			    $("#clc").click(function () {
 			        alert(1);
-                    var productName = $("input[placeholder='搜索']").val();
-                    if(productName){
-                       location.href="${pageContext.request.contextPath}/orders/findAll?ordersName="+productName;
+                    var ordersNum = $("input[placeholder='搜索']").val();
+                    if(ordersNum){
+                       location.href="${pageContext.request.contextPath}/orders/findAll?orderNum="+ordersNum;
                     }
                 });
             });
@@ -309,7 +309,7 @@
 											<td class="text-center">${orders.orderStatusStr }</td>
 											<td class="text-center">
 												<button type="button" class="btn bg-olive btn-xs">订单</button>
-												<button type="button" class="btn bg-olive btn-xs" onclick="location.href='${pageContext.request.contextPath}/orders/findById.do?id=${orders.id}'">详情</button>
+												<button type="button" class="btn bg-olive btn-xs" onclick="location.href='${pageContext.request.contextPath}/orders/findById?id=${orders.id}'">详情</button>
 												<button type="button" class="btn bg-olive btn-xs">编辑</button>
 											</td>
 										</tr>
@@ -481,7 +481,8 @@
 	<script
 		src="${pageContext.request.contextPath}/plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script>
-		function changePageSize() {
+
+            function changePageSize() {
 			//获取下拉框的值
 			var pageSize = $("#changePageSize").val();
 
@@ -489,6 +490,7 @@
 			location.href = "${pageContext.request.contextPath}/orders/findAll?pageNum=${page.pageNum}&pageSize="
 					+ pageSize;
 		}
+
 		$(document).ready(function() {
 			// 选择框
 			$(".select2").select2();

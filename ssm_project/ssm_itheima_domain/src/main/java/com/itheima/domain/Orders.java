@@ -3,13 +3,14 @@ package com.itheima.domain;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Orders implements Serializable {
     private String id;//主键id
     private String orderNum;//订单编号
     private Date orderTime;//下单时间
     private String orderTimeStr;
-//    private Integer peopleCount;//出行人数
+    private Integer peopleCount;//出行人数
     private String orderDesc;//订单描述
     private Integer payType ;//支付方式(0 支付宝 1 微信 2其它)
     private String payTypeStr;
@@ -17,9 +18,45 @@ public class Orders implements Serializable {
     private String orderStatusStr;
     private String[] idStr;
     private Integer productId;//产品id外键
-//    private Integer memberid;//会员id外键
-    //多表一对一关系关联
+    private Integer memberId;//会员id外键
+
+    public Integer getPeopleCount() {
+        return peopleCount;
+    }
+
+    public void setPeopleCount(Integer peopleCount) {
+        this.peopleCount = peopleCount;
+    }
+
+    //订单表,产品表一对一关系关联
     private Product product;
+    //订单表,会员表一对一关联关系
+    private Member member;
+    //订单表跟游客表的一对多关系
+    private List<Traveller> travellers;
+    public Integer getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public List<Traveller> getTravellers() {
+        return travellers;
+    }
+
+    public void setTravellers(List<Traveller> travellers) {
+        this.travellers = travellers;
+    }
 
     public String[] getIdStr() {
         return idStr;

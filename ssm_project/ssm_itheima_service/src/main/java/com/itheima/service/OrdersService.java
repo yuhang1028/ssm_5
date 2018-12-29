@@ -14,7 +14,7 @@ public interface OrdersService {
      * @return
      * @throws Exception
      */
-    List<Orders> findAll(Integer pageNum,Integer pageSize) throws Exception;
+    List<Orders> findAll(Integer pageNum,Integer pageSize,Orders orders) throws Exception;
 
     /**
      * 删除
@@ -28,4 +28,11 @@ public interface OrdersService {
      * @param orders
      */
     void updateStatus(Orders orders) throws Exception;
+
+    /**
+     * 查询详情
+     * @param id
+     * @return
+     */
+    Orders findById(String id) throws Exception;
 }

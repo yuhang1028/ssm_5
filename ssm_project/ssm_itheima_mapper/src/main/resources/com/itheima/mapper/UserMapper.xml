@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.UserMapper">
+    <resultMap id="userMap" type="usersInfo">
+       <id column="id" property="id"></id>
+        <collection property="roleList" column="id" ofType="role" select="com.itheima.mapper.RoleMapper.findAllByIds" fetchType="lazy"></collection>
+     </resultMap>
+<!--安全验证-->
+    <select id="findUserByName" parameterType="String" resultMap="userMap">
+      select * from USERS where username = #{username}
+    </select>
+<!--查询所有用户信息-->
+    <select id="findAll" resultMap="userMap">
+        select * from USERS
+    </select>
+    <!--添加用户信息-->
+    <insert id="save" parameterType="usersInfo">
+        INSERT  INTO USERS(EMAIL, USERNAME, PASSWORD, PHONENUM, STATUS) VALUES (#{email},#{username},#{password},#{phoneNum},#{status})
+    </insert>
+
+    <!--查询用户详情-->
+    <select id="findUserAndRoleById" resultMap="userMap" parameterType="String">
+        select * from USERS where id = #{id}
+    </select>
+</mapper>

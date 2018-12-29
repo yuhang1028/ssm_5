@@ -13,7 +13,7 @@
     <!--开启Controller组件扫描-->
     <context:component-scan base-package="com.itheima.controller"/>
     <!--配置适配器映射器适配器处理器-->
-    <mvc:annotation-driven conversion-service="conversionService"/>
+    <mvc:annotation-driven conversion-service="conversionService" validator="validatorFactoryBean"/>
     <!--释放静态资源文件-->
     <mvc:default-servlet-handler/>
     <!--配置视图解析器-->
@@ -28,5 +28,9 @@
                 <bean class="com.itheima.utils.StringToDate"/>
             </set>
         </property>
+    </bean>
+    <!--校验框架-->
+    <bean id="validatorFactoryBean" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"></property>
     </bean>
 </beans>
